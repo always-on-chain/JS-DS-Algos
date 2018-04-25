@@ -26,6 +26,7 @@ class Stack {
   }
 }
 
+//Decimal to Binary Converter
 const divideByTwo = (num) => {
   let remStack = new Stack();
   let rem;
