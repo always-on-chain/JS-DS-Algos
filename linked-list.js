@@ -98,7 +98,7 @@ function DoublyLinkedList() {
       let index = 0;
 
       if (position === 0) {
-        if (!head) {
+        if (!this.head) {
           this.head = node;
           this.tail = node;
         } else {
@@ -129,4 +129,39 @@ function DoublyLinkedList() {
       return false;
     }
   }
+
+  this.removeAt = (position) => {
+    if (position > -1 && position < this.length) {
+      let current = this.head;
+      let previous;
+      let index = 0;
+
+      if (position === 0) {
+        this.head = current.next;
+        if (this.length === 1) {
+          this.tail = null;
+        } else {
+          this.head.prev = null;
+        }
+      } else if (position === this.length - 1) {
+        current = this.tail;
+        this.tail = current.prev;
+        this.tail.next = null;
+      } else {
+        while (index < position) {
+          previous = current;
+          current = current.next;
+        }
+        previous.next = current.next;
+        current.next.prev = previous;
+      }
+      this.length--;
+      return current.element;
+    } else {
+      return null;
+    }
+  }
 }
+
+let double = new DoublyLinkedList(); 
+double.insert(0, 1);
