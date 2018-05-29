@@ -27,8 +27,20 @@ class BinarySearchTree {
       insertNode(this.root, newNode);
     }
   }
-  search() {
-
+  search(key) {
+    const searchNode = (node, key) => {
+      if (node === null) {
+        return false;
+      }
+      if (key < node.key) {
+        return searchNode(node.left, key);
+      } else if (key > node.key) {
+        return searchNode(node.right, key);
+      } else {
+        return true;
+      }
+    }
+    return searchNode(this.root, key);
   }
   inOrderTraverse(callback) {
     const inOrderTraverseNode = (node, callback) => {
@@ -84,6 +96,47 @@ class BinarySearchTree {
     }
     return maxNode(this.root);
   }
+  remove(key) {
+    const removeNode = (node, key) => {
+      const findMinNode = (node) => {
+        while (node && node.left) {
+          node = node.left;
+        }
+        return node;
+      }
+
+      if (node === null) {
+        return null;
+      }
+      if (key < node.key) {
+        node.left = removeNode(node.left, key);
+        return node;
+      } else if (key > node.key) {
+        node.right = removeNode(node.right, key);
+        return node;
+      } else { //key is equal to node key
+        //case 1 - a leaf node
+        if (node.left === null && node.right === null) {
+          node = null;
+          return node;
+        }
+        //case 2 - a node with only 1 child
+        if (node.left === null) {
+          node = node.right;
+          return node;
+        } else if (node.right === null) {
+          node = node.left;
+          return node;
+        }
+        //case 3 - a node with 2 children
+        let aux = findMinNode(node.right);
+        node.key = aux.key;
+        node.right = removeNode(node.right, aux.key);
+        return node;
+      }
+    }
+    this.root = removeNode(this.root, key);
+  }
   printNode(value) {
     console.log(value);
   }
@@ -113,5 +166,5 @@ tree.insert(20);
 tree.insert(18);
 tree.insert(25);
 tree.insert(6);
-tree.min(); //3
-tree.max(); //25
+// tree.remove(7);
+tree.inOrderTraverse(tree.printNode)

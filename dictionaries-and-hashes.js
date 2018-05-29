@@ -140,4 +140,3 @@ hash.put('Mindy', 'mindy@email.com');
 hash.put('Paul', 'paul@email.com');
 hash.put('Nathan', 'nathan@email.com');
 hash.get('Sue');
-
