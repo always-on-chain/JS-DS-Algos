@@ -141,22 +141,61 @@ class Graph {
   breathFirstSearch(v, callback) {
     let color = this.initializeColor();
     let queue = new Queue();
+    let d = [];
+    let pred = [];
     queue.enqueue(v);
 
-    while (!queue.items.isEmpty) {
+    for (let i = 0; i < this.verticies.length; i++) {
+      d[this.verticies[i]] = 0;
+      pred[this.verticies[i]] = null;
+    }
+
+    while (!queue.isEmpty()) {
       let u = queue.dequeue();
       let neighbors = this.adjList.get(u);
+      console.log('neighbors', neighbors);
       color[u] = 'grey';
       for (let i = 0; i < neighbors.length; i++) {
         let w = neighbors[i];
         if (color[w] === 'white') {
           color[w] = 'grey';
+          d[w] = d[u] + 1;
+          pred[w] = u;
           queue.enqueue(w);
         }
       }
       color[u] = 'black';
       if (callback) {
         callback(u);
+      }
+    }
+    return {
+      distances: d,
+      predecessors: pred
+    }
+  }
+
+  depthFirstSearch(callback) {
+    let color = this.initializeColor();
+
+    let dfsVisit = (u, color, callback) => {
+      color[u] = 'grey';
+      if (callback) {
+        callback(u);
+      }
+      let neighbors = this.adjList.get(u);
+      for (let i = 0; i < neighbors.length; i++) {
+        let w = neighbors[i];
+        if (color[w] === 'white') {
+          dfsVisit(w, color, callback);
+        }
+      }
+      color[u] = 'black';
+    }
+
+    for (let i = 0; i < this.verticies.length; i++) {
+      if (color[this.verticies[i]] === 'white') {
+        dfsVist(this.verticies[i], color, callback);
       }
     }
   }
@@ -184,4 +223,8 @@ graph.addEdge('B', 'E');
 graph.addEdge('B', 'F');
 graph.addEdge('E', 'I');
 
-graph.breathFirstSearch(myVerticies[0], printNode); 
+// graph.breathFirstSearch(myVerticies[0], printNode); 
+// let shortestPathA =  graph.breathFirstSearch(myVerticies[0]);
+// console.log(shortestPathA);
+
+graph.depthFirstSearch(graph.printNode);
