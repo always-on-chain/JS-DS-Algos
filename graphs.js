@@ -195,7 +195,7 @@ class Graph {
 
     for (let i = 0; i < this.verticies.length; i++) {
       if (color[this.verticies[i]] === 'white') {
-        dfsVist(this.verticies[i], color, callback);
+        dfsVisit(this.verticies[i], color, callback);
       }
     }
   }
